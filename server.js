@@ -12,7 +12,6 @@ app.use(express.json());
 const urls = [
     'https://dcomercio.com.br/',
     'https://portaldomei.com.br/',
-    'https://controllerapi.acsp.com.br/',
     'https://protheus.acsp.com.br/rest',
     'https://acsp.com.br/',
     'https://fluig.acsp.com.br/portal/home',
@@ -22,6 +21,7 @@ const urls = [
 
 async function checkSites() {
     const results = [];
+
     for (const url of urls) {
         try {
             const response = await axios.get(url);
