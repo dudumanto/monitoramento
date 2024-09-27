@@ -28,5 +28,5 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
    cd monitoramento
 
 2.  Instale as dependências
-        ```bash
+    ```bash
     npm install   
