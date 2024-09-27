@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Monitor de Sites</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    
+    .container {
+        max-width: 600px;
+        margin: auto;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    
+    th {
+        background-color: #f4f4f4;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1>Monitor de Sites</h1>
+        <div id="timer">Próxima atualização em: 5:00</div>
+        <table id="statusTable">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Status</th>
+                    <th>Status HTTP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Resultados serão adicionados aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let countdown = 300; // 5 minutos em segundos
+
+        function updateTimer() {
+            const minutes = Math.floor(countdown / 60);
+            const seconds = countdown % 60;
+            document.getElementById('timer').textContent = `Próxima atualização em: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            countdown--;
+
+            if (countdown < 0) {
+                countdown = 300; // Resetar o contador para 5 minutos
+                fetchStatus();
+            }
+        }
+
+        async function fetchStatus() {
+            const response = await fetch('/api/status');
+            const data = await response.json();
+            const tbody = document.querySelector('#statusTable tbody');
+            tbody.innerHTML = ''; // Limpa a tabela
+
+            data.forEach(site => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${site.url}</td>
+                    <td>${site.status}</td>
+                    <td>${site.httpStatus || site.message || 'N/A'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Chama a função fetchStatus e atualiza o timer a cada segundo
+        fetchStatus(); // Executa imediatamente ao carregar
+        setInterval(updateTimer, 1000); // Atualiza o timer a cada segundo
+    </script>
+</body>
+</html>
