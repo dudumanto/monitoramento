@@ -27,6 +27,21 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
    git clone https://github.com/seu-usuario/monitoramento.git
    cd monitoramento
 
-2.  Instale as dependências
+2.  Instale as dependências :
     ```bash
-    npm install   
+    npm install
+
+3. Execute o servidor:
+   ```bash
+   node server.js
+
+4. Abra o seu navegador e acesse
+    ```bash
+    http://localhost:3000 ou na porta que você colocar no server.js
+
+5. Adicione o site ou sistema que você quer monitorar no arquivo server.js
+    ```bash
+    const urls = [
+       'https://globo.com'
+    ]
+    
