@@ -97,25 +97,25 @@
     </div>
 
     <script>
-        let countdown = 120; // 5 minutos em segundos
+        let countdown = 120; // 2 minutos em segundos
         const offlineCounters = {}; // Objeto para contar offline de cada site
-
+    
         function updateTimer() {
             const minutes = Math.floor(countdown / 60);
             const seconds = countdown % 60;
             document.getElementById('timer').textContent = `Próxima atualização em: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
             countdown--;
-
+    
             if (countdown < 0) {
-                countdown = 300; // Resetar o contador para 5 minutos
+                countdown = 120; // Resetar o contador para 2 minutos
                 fetchStatus();
             }
         }
-
+    
         async function fetchStatus() {
             const loader = document.getElementById('loader');
             loader.style.display = 'block'; // Mostrar o loader
-
+    
             try {
                 const response = await fetch('/api/status');
                 const data = await response.json();
@@ -125,7 +125,7 @@
                 // Contadores para o gráfico
                 let onlineCount = 0;
                 let offlineCount = 0;
-
+    
                 data.forEach(site => {
                     const row = document.createElement('tr');
                     
@@ -133,14 +133,14 @@
                     if (!offlineCounters[site.url]) {
                         offlineCounters[site.url] = 0;
                     }
-
+    
                     if (site.status.toLowerCase() === 'fora do ar') {
                         offlineCounters[site.url]++; // Incrementa contador de offline
                         offlineCount++;
                     } else {
                         onlineCount++;
                     }
-
+    
                     row.innerHTML = `
                         <td>${site.url}</td>
                         <td>${site.status}</td>
@@ -149,7 +149,7 @@
                     `;
                     tbody.appendChild(row);
                 });
-
+    
                 // Atualiza o gráfico de pizza
                 updateChart(onlineCount, offlineCount);
             } catch (error) {
@@ -158,10 +158,10 @@
                 loader.style.display = 'none'; // Ocultar o loader
             }
         }
-
+    
         const ctx = document.getElementById('statusChart').getContext('2d');
         let statusChart;
-
+    
         function updateChart(onlineCount, offlineCount) {
             if (statusChart) {
                 statusChart.destroy();
@@ -183,9 +183,10 @@
                 }
             });
         }
-
+    
         fetchStatus(); 
         setInterval(updateTimer, 1000);
     </script>
+    
 </body>
 </html>
