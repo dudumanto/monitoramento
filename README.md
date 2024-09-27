@@ -26,3 +26,7 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
    ```bash
    git clone https://github.com/seu-usuario/monitoramento.git
    cd monitoramento
+
+2.  Instale as dependências
+        ```bash
+    npm install   
