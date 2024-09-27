@@ -10,14 +10,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 const urls = [
-    'https://dcomercio.com.br/',
-    'https://portaldomei.com.br/',
-    'https://controllerapi.acsp.com.br/',
-    'https://protheus.acsp.com.br/rest',
-    'https://acsp.com.br/',
-    'https://fluig.acsp.com.br/portal/home',
-    'https://legal.acsp.com.br/',
-    'https://camara.acsp.com.br/'
+
 ];
 
 async function checkSites() {
@@ -45,5 +38,5 @@ app.get('/api/status', async (req, res) => {
 
 // Iniciando o servidor
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://172.43.6.170:3000/`);
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
