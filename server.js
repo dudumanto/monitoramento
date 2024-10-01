@@ -16,31 +16,37 @@ const urls = [
     'https://acsp.com.br/',
     'https://fluig.acsp.com.br/portal/home',
     'https://legal.acsp.com.br/',
-    'https://camara.acsp.com.br/'
+    'https://camara.acsp.com.br/',
+    'http://encontrodeempresarios.com.br'
 ];
 
-async function checkSites() {
-    const results = [];
-
-    for (const url of urls) {
-        try {
-            const response = await axios.get(url);
-            results.push({ url, status: 'no ar', httpStatus: response.status });
-        } catch (error) {
-            if (error.response) {
-                results.push({ url, status: 'fora do ar', httpStatus: error.response.status });
-            } else {
-                results.push({ url, status: 'erro', message: error.message });
-            }
+async function checkSite(url) {
+    try {
+        const response = await axios.get(url);
+        return { url, status: 'no ar', httpStatus: response.status };
+    } catch (error) {
+        if (error.response) {
+            return { url, status: 'fora do ar', httpStatus: error.response.status };
+        } else {
+            return { url, status: 'erro', message: error.message };
         }
     }
-    return results;
+}
+
+async function checkSites() {
+    const promises = urls.map(checkSite); // Cria um array de promessas
+    return Promise.all(promises); // Executa todas as promessas em paralelo
 }
 
 // Endpoint para verificar status
 app.get('/api/status', async (req, res) => {
-    const status = await checkSites();
-    res.json(status);
+    try {
+        const status = await checkSites();
+        res.json(status);
+    } catch (error) {
+        console.error("Erro ao verificar status dos sites:", error);
+        res.status(500).json({ error: 'Erro ao verificar status dos sites' });
+    }
 });
 
 // Iniciando o servidor
